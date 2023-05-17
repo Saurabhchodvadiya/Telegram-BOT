@@ -2,6 +2,14 @@
 
 ## Description
 This Telegram bot is a powerful tool designed to assist users in finding their ideal properties based on specific criteria. Developed using Python, this bot leverages the Telegram messaging platform to provide a seamless and interactive property search experience.
+
+## Features
+1. Post Property
+2. Search Property
+3. Update Property
+4. Search Property Based on Filter
+5. Bulk Upload Property (Agent , Housing Company)  
+
 ## Posting Property
 Posting Property: This operation allows users to post details about a property they want to sell or rent. Users can provide information such as the location, price, size, amenities, and any other relevant details.
 
@@ -48,3 +56,7 @@ Search Property Based on Filter: This operation allows users to search for prope
 2. Send a message to the bot
 3. The bot will reply with a message
 4. The bot will send a message to the chat
+
+
+
+
