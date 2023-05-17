@@ -1,8 +1,7 @@
 # Telegram-BOT
 
 ## Description
-This is a simple Telegram bot that can be used to send messages to a Telegram chat. 
-It is written in Python.
+This Telegram bot is a powerful tool designed to assist users in finding their ideal properties based on specific criteria. Developed using Python, this bot leverages the Telegram messaging platform to provide a seamless and interactive property search experience.
 ## Posting Property
 Posting Property: This operation allows users to post details about a property they want to sell or rent. Users can provide information such as the location, price, size, amenities, and any other relevant details.
 
