@@ -174,7 +174,6 @@ def address(update, context, co=0):
     else:
         query = "UPDATE poster SET address = '"+poster_address + \
             "' WHERE telegram_id ="+str(update.message.from_user.id)+"::text"
-        print(query)
         cur.execute(query)
         conn.commit()
         reply_keyboard = [[1,2],[3,4],[5]]
@@ -250,7 +249,6 @@ def higher_rent(update, context):
         return "flat_area"
 
     except Exception as e:
-        print(e)
 
         update.message.reply_text(
             'Enter your higher rent', reply_markup=ReplyKeyboardRemove())
@@ -348,7 +346,6 @@ def start_date(update, context):
             return "start_date"
 
     except Exception as e:
-        print(e)
         update.message.reply_text(
             'Incorrect format, should be (DD/MM/YYYY - DD/MM/YYYY)', reply_markup=ReplyKeyboardRemove())
         return "start_date"
@@ -372,7 +369,6 @@ def phone_number(update, context):
         query = "UPDATE poster SET mobile = '" + \
             str(phone_number)+"' WHERE telegram_id =" + \
             str(update.message.from_user.id)+"::text"
-        print(query)
         cur.execute(query)
         conn.commit()
         update.message.reply_text(
@@ -399,7 +395,6 @@ def email(update, context):
         query = "UPDATE poster SET email = '" + \
             str(email)+"' WHERE telegram_id =" + \
             str(update.message.from_user.id)+"::text"
-        print(query)
         cur.execute(query)
         conn.commit()
         update.message.reply_text(
@@ -421,7 +416,6 @@ def people(update, context):
     query = "UPDATE poster SET people = '" + \
         str(people)+"' WHERE telegram_id =" + \
         str(update.message.from_user.id)+"::text"
-    print(query)
     cur.execute(query)
     conn.commit()
 
@@ -462,12 +456,9 @@ def User_Data(update, context):
     # send data to user
     cur.execute("SELECT * FROM listings LIMIT 0")
     colnames = [desc[0] for desc in cur.description]
-    print(colnames)
     user_id = update.message.from_user.id
     user_name = update.message.from_user.first_name
     last_name = update.message.from_user.last_name
-    # user_phone=update.message.from_user.phone_number
-    print(user_id, user_name)
     update.message.reply_text(
         user_data, reply_markup=ReplyKeyboardRemove())
     update.message.reply_text(

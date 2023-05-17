@@ -179,7 +179,6 @@ def seeker_anmeldung(update, context):
         anmeldung = key_Word[int(anmeldung) - 1]
         query = "UPDATE seeker SET anmeldung = '"+anmeldung + \
             "' WHERE telegram_id ="+str(update.message.from_user.id)
-        print(query)
         cur.execute(query)
         conn.commit()
         update.message.reply_text(
@@ -216,8 +215,6 @@ def seeker_higher_rent(update, context):
         higher_rent = str(update.message.text)
 
         higher_rent = int(higher_rent)
-        # update.message.reply_text(
-        # 'Enter your higher rent',reply_markup=ReplyKeyboardRemove())
         postrr_Data_list.insert(6, higher_rent)
         query = (
             "UPDATE seeker SET high_rent = '"
@@ -234,9 +231,6 @@ def seeker_higher_rent(update, context):
         )
 
         return "seeker_start_date"
-
-        # calendar = create_calendar(calendar_id="my_calendar", callback=calendar_callback)
-        # context.bot.send_message(chat_id=update.message.chat_id, text="Please select a date:", reply_markup=calendar)
 
     except:
         update.message.reply_text(

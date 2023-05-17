@@ -52,7 +52,6 @@ def handle_message(update, context):
     message_type = update.message.chat.type
     text = str(update.message.text).lower()
     response = ''
-    print(f'User ({update.message.chat.id}) says: "{text}" in: {message_type}')
     if message_type == 'group' and 'bot19292bot' in text:
         new_text = text.replace('@bot19292bot', '').strip()
         response = handle_response(new_text)
@@ -98,7 +97,7 @@ def Options(update, context):
 
             query = "INSERT INTO poster (telegram_id) VALUES (" + \
                 str(update.message.from_user.id)+")"
-            print(query)
+    
             cur.execute(query)
             conn.commit()
         return "poster_type"
@@ -146,31 +145,9 @@ def Options(update, context):
         return 'handle_message'
 
 
-def excel_type(update, context):
-
-    file_type = update.message.document.mime_type
-
-    if file_type == 'application/vnd.ms-excel':
-        file_id = update.message.document.file_id
-        newFile = context.bot.getFile(file_id)
-        newFile.download('excel.xlsx')
-        df = pd.read_excel('excel.xlsx')
-        print(df)
-        for index, row in df.iterrows():
-            pass
-        update.message.reply_text('Successfully inserted')
-        return ConversationHandler.END
-    update.message.reply_text('Please send the excel file')
-    return "excel_type"
 
 
-def error(update, context):
-    '''
-    This function is used to handle the error
 
-
-    '''
-    print(f'Update {update} caused error {context.error}')
 
 
 def stop(update, context):
@@ -183,16 +160,11 @@ def stop(update, context):
     )
     return ConversationHandler.END
 
-# get token from .env file
 token = os.getenv('BOT_KEY')
-print(token)
 if __name__ == '__main__':
     updater = Updater(token, use_context=True)
     dp = updater.dispatcher
-    # Commands
-    # dp.add_handler(CommandHandler('start', handle_message))
-    # dp.add_handler(CommandHandler('help', help_command))
-    # dp.add_handler(CommandHandler('custom', custom_command))
+ 
     dp.add_handler(CommandHandler('stop', stop))
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', handle_message)],

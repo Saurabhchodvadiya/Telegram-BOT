@@ -24,27 +24,9 @@ conn.commit()
 def search_type(update, context):
     data = str(update.message.text)
     if '1' in data:
-        '''
-           id SERIAL PRIMARY KEY,
-    telegram_id INTEGER,
-    user_type VARCHAR(255),
-    city VARCHAR(255),
-    address VARCHAR(255),
-    area VARCHAR(255),
-    apartment VARCHAR(255),
-    rent VARCHAR(255),
-    startdate VARCHAR(255),
-    end_date VARCHAR(255),
-    mobile VARCHAR(255),
-    email VARCHAR(255),
-    people VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        
-        '''
         cur.execute(
             f"select * from seeker where telegram_id = {update.message.from_user.id} ")
         data = cur.fetchone()
-        print(data)
         if data:
            
             update.message.reply_text(
@@ -68,15 +50,10 @@ def search_type(update, context):
                     
                         ''')
             else:
-                # return no data found
                 update.message.reply_text(
                     'No data found',
                 )
-                # if no data found ask for manual search
-                # update.message.reply_text(
-                #     'Do you want to search manually?',
-                #     reply_markup=ReplyKeyboardMarkup([['Manual']])
-                # )
+     
                 update.message.reply_text(
                     'Update your profile to get better result or search manually', reply_markup=ReplyKeyboardRemove()
                 )
@@ -86,7 +63,6 @@ def search_type(update, context):
                 )
                 return ConversationHandler.END
         else:
-            # return no data found
             update.message.reply_text(
                 'No data found',
             )
@@ -120,12 +96,10 @@ def search_type(update, context):
         return "search_type"
 
 def next_option(update, context):
-    # insert data into database
     data = str(update.message.text)
     data_list = ['Munich', 'Berlin', 'Frankfurt', 'Dusseldorf', 'Hamburg','Skip']
     if data in [1, 2, 3, 4, 5,'1','2','3','4','5']:
         data = data_list[int(data)-1]
-        # if data != "Skip":
         query = f"update search set city = '{data}' where telegram_id = {update.message.from_user.id}"
         cur.execute(query)
         conn.commit()
@@ -145,22 +119,9 @@ def next_option(update, context):
         )
         return "next_option"
         
-# def next_option_address(update, context):
-#     # insert data into database
-#     data = str(update.message.text)
-#     # if data != "Skip":
-#     query = f"update search set address = '{data}' where telegram_id = {update.message.from_user.id}"
-#     cur.execute(query)
-#     conn.commit()
-#     update.message.reply_text(
-#         'Please enter Area(ex: 1000  or Skip)',
-#         reply_markup=ReplyKeyboardRemove()
-#     )
-#     return "next_option_area"
 
 
 def next_option_area(update, context):
-    # insert data into database
     data = str(update.message.text)
     
     query = f"update search set area = '{data}' where telegram_id = {update.message.from_user.id}"
@@ -175,9 +136,7 @@ def next_option_area(update, context):
     return "next_option_rent"
 
 def next_option_rent(update, context):
-    # insert data into database
     data = str(update.message.text)
-    # if data != "Skip":
     query = f"update search set rent = '{data}' where telegram_id = {update.message.from_user.id}"
     cur.execute(query)
     conn.commit()
@@ -233,7 +192,6 @@ def next_option_start_date(update, context):
     return "next_option_end_date"
 
 def next_option_end_date(update, context):
-
     data = str(update.message.text)
     if data != "Skip":
         if date_format_check(data):
@@ -254,9 +212,6 @@ def next_option_end_date(update, context):
         'Please wait for the result',
         reply_markup=ReplyKeyboardRemove()
     )
-
-    
-    # return result
     query = f"select * from search where telegram_id = {update.message.from_user.id}"
     cur.execute(query)
     result = cur.fetchone()
@@ -277,9 +232,7 @@ def next_option_end_date(update, context):
         query=query+" or start_date='"+start_date+"'"
     if end_date !="" and end_date != None and end_date !="None" and end_date != "none"and end_date != "Skip":
         query=query+" or end_date='"+end_date+"' )"
-    # get past 30 days data based on created_at
     query = query + " and created_at >='" + str((datetime.now() - timedelta(days=30))) + "'"
-    print(query)
     cur.execute(query)
     result = cur.fetchall()
     if len(result) == 0:
@@ -289,8 +242,6 @@ def next_option_end_date(update, context):
         )
         return ConversationHandler.END
     else:
-   
-        print(result)
         for i in result:
             
             update.message.reply_text(
@@ -318,10 +269,8 @@ def next_option_end_date(update, context):
 
 
 def manual_search(update, context):
-    # get data from database
     data = str(update.message.text)
     if "City" in data:
-        # give option to select city
         reply_keyboard = [['Munich', 'Berlin'], [
             'Frankfurt', 'Dusseldorf'], ['Hamburg','Skip']]
         update.message.reply_text(
@@ -331,7 +280,6 @@ def manual_search(update, context):
         )
         return "manual_search_city"
     elif "Type" in data:
-        # give option to select city
         reply_keyboard = [['Students', 'Profesional', 'Academics']]
         update.message.reply_text(
             'Please select your Type from keyboard button',
@@ -358,12 +306,9 @@ def manual_search(update, context):
 
 
 def manual_search_city(update, context):
-    # get data from database
     city = str(update.message.text)
-    # get data from database
     cur.execute(f"select * from listings where city = '{city}'")
     data = cur.fetchall()
-    print(data)
     if data:
         for i in data:
             update.message.reply_text('''
