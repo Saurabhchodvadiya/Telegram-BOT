@@ -13,7 +13,7 @@ This Telegram bot is a powerful tool designed to assist users in finding their i
 ## Posting Property
 Posting Property: This operation allows users to post details about a property they want to sell or rent. Users can provide information such as the location, price, size, amenities, and any other relevant details.
 
-## Sekker
+## Seeker
 Seeker: The seeker operation helps users who are looking for a property. Users can specify their requirements, such as the desired location, price range, size, and specific amenities they are looking for. The bot will then provide them with relevant property listings based on their criteria.
 
 ## Update Your Record
