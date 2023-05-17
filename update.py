@@ -5,7 +5,7 @@ from connection import conn , global_phone_number_validation , email_validation
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackQueryHandler
 
 def update_type(update, context):
     poster_type = str(update.message.text)

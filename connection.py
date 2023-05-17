@@ -1,10 +1,12 @@
 import psycopg2
-
+from dotenv import load_dotenv
+import os
+    
 # Set up the connection parameters
 conn_params = {
-    'host': 'localhost',
-    'port': 5432,
-    'dbname': 'zimmerwelt',
+    'host': os.getenv('DB_HOST'),
+    'port': os.getenv('DB_PORT'),
+    'dbname': os.getenv('DB_NAME'),
     'user': 'postgres',
     'password': '123456'
 }

@@ -270,7 +270,7 @@ def next_option_end_date(update, context):
     if city !="" and city != None and city !="None" and city != "none" and city != "Skip":
         query=query+"city ='"+city+"'"
     if rent !="" and rent != None and rent !="None" and rent != "none"and rent != "Skip":
-        query=query+"and (rent='"+rent+"'"
+        query=query+"and (rent<='"+rent+"'"
     if area !="" and area != None and area !="None" and area != "none"and area != "Skip":
         query=query+" or area='"+area+"'"
     if start_date !="" and start_date != None and start_date !="None" and start_date != "none"and start_date != "Skip":
