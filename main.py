@@ -57,6 +57,10 @@ def handle_message(update, context):
         response = handle_response(new_text)
 
     if message_type == 'private':
+        # msg user in private how i can help you ?
+        update.message.reply_text(
+            'This is a private message. How can I help you? ')
+        
         reply_keyboard = [['1', '2', '3', '4',]]
         update.message.reply_text(
             '''Please select your option(Type the number or click the button):\n1. Poster\n2. Seeker\n3. Update\n4. Search
@@ -79,16 +83,21 @@ def Options(update, context):
 
     text = str(update.message.text)
     if '1' in text:
-        update.message.reply_text('You selected Poster')
-        reply_keyboard = [[1, 2],
-                          [3, 4]]
-        update.message.reply_text(
-            'Please select your type from keyboard button\n1. current tenant\n2. agent\n3. housing co\n4. landlord',
-            reply_markup=(ReplyKeyboardMarkup(
-                reply_keyboard, one_time_keyboard=True)),
+        # update.message.reply_text('You selected Poster')
+        # reply_keyboard = [[1, 2],
+        #                   [3, 4]]
+        # update.message.reply_text(
+        #     'Please select your type from keyboard button\n1. current tenant\n2. agent\n3. housing co\n4. landlord',
+        #     reply_markup=(ReplyKeyboardMarkup(
+        #         reply_keyboard, one_time_keyboard=True)),
 
-        )
-
+        # )
+        reply_keyboard = [[1, 2]
+                          ]
+        update.message.reply_text('You selected Poster \n You want to post bulk or single post ? \n1. Bulk\n2. Single',
+                                  reply_markup=(ReplyKeyboardMarkup(
+                                      reply_keyboard, one_time_keyboard=True)),
+                                  )
         cur.execute("select * from poster where telegram_id =" +
                     str(update.message.from_user.id)+"::text")
 
@@ -100,7 +109,8 @@ def Options(update, context):
     
             cur.execute(query)
             conn.commit()
-        return "poster_type"
+        return "poster_options"
+        # return "poster_type"
     elif '2' in text:
         update.message.reply_text('You selected Seeker')
         reply_keyboard = [[1, 2], [3]]
@@ -147,6 +157,8 @@ def Options(update, context):
 
 
 
+def error(update, context):
+    print(f'Update {update} caused error {context.error}')
 
 
 
@@ -167,11 +179,15 @@ if __name__ == '__main__':
  
     dp.add_handler(CommandHandler('stop', stop))
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', handle_message)],
+        # entry point startwith command /start or hi or hello or hey
+        entry_points=[CommandHandler('start', handle_message), MessageHandler(
+            Filters.regex('^(hi|hello|hey)$'), handle_message)],  
+        # entry_points=[CommandHandler('start', handle_message)],
         states={
             'handle_message': [MessageHandler(Filters.text, handle_message)],
             "Options": [MessageHandler(Filters.text, Options)],
             "poster_type": [MessageHandler(Filters.text, poster_type)],
+            "poster_options" : [MessageHandler(Filters.text, poster_options)],
             "city": [MessageHandler(Filters.text, city_type)],
             "address": [MessageHandler(Filters.text, address)],
             "location": [MessageHandler(Filters.text, location)],

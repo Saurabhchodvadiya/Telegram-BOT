@@ -163,7 +163,7 @@ def seeker_home_type(update, context, co=0):
         reply_keyboard = [[1, 2, 3]]
 
         update.message.reply_text(
-            "Are you willing to sign Anmeldung? : \n 1. Yes \n 2. No \n 3. Not Sure",
+            "Anmeldung Required : \n 1. Yes \n 2. No \n 3. Maybe",
             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
         )
 

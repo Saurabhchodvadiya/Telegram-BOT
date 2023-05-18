@@ -73,7 +73,7 @@ def upload(update, context):
         'Please wait while we are uploading your data', reply_markup=ReplyKeyboardRemove())
 
     df = pd.read_excel(r'poster_list.xlsx')
-    path = os.path.join(os.getcwd(), 'Telegram\Sample.xlsx')
+    path = os.path.join(os.getcwd(), '\Sample.xlsx')
     sample_df = pd.read_excel(path)
     if list(df.columns) == list(sample_df.columns):
         for index, row in df.iterrows():
@@ -90,7 +90,33 @@ def upload(update, context):
             'To start again please type /start', reply_markup=ReplyKeyboardRemove())
         return ConversationHandler.END
     
+def poster_options(update, context):
+    msg = update.message.text
+    if msg in [1,'1']:
+        path = os.path.join(os.getcwd(), '\Sample.xlsx')
+        print(path)
+        update.message.reply_text(
+            'Here is the sample excel file', reply_markup=ReplyKeyboardRemove())
+        update.message.reply_document(
+            document=open('Sample.xlsx', 'rb'))
+        update.message.reply_text(
+            'Please send your excel file', reply_markup=ReplyKeyboardRemove())
+        return "upload"
+    elif msg in [2,'2']:
+        reply_keyboard = [[1, 2],
+                          [3, 4]]
+        update.message.reply_text(
+            'Please select your type from keyboard button\n1. current tenant\n2. agent\n3. housing co\n4. landlord',
+            reply_markup=(ReplyKeyboardMarkup(
+                reply_keyboard, one_time_keyboard=True)),
 
+        )
+        return "poster_type"
+    else:
+        update.message.reply_text(
+            'Please select correct option', reply_markup=ReplyKeyboardRemove())
+       
+        return 'poster_options'
 
 def poster_type(update, context):
     '''
@@ -98,19 +124,16 @@ def poster_type(update, context):
     '''
     poster_type = str(update.message.text)
     checker_keyword = ['current tenant', 'agent', 'housing co', 'landlord']
-    cur.execute("select user_type from listings where telegram_id =" +
-                str(update.message.from_user.id)+"::text")
-
-    type = cur.fetchone()
-    if poster_type in [ 2,3,4, '2' , '3' , '4' ]:
-        poster_type = checker_keyword[int(poster_type)-1]
-        update.message.reply_text(
-            'Please send your excel file', reply_markup=ReplyKeyboardRemove())
-        path = os.path.join(os.getcwd(), 'Telegram\Sample.xlsx')
-        update.message.reply_document(
-            document=open(path, 'rb'))
-        return "upload"
-    elif poster_type in [1, '1']:
+    
+    # if poster_type in [ 5, '5']:
+    #     poster_type = checker_keyword[int(poster_type)-1]
+    #     update.message.reply_text(
+    #         'Please send your excel file', reply_markup=ReplyKeyboardRemove())
+    #     path = os.path.join(os.getcwd(), '\Sample.xlsx')
+    #     update.message.reply_document(
+    #         document=open(path, 'rb'))
+    #     return "upload"
+    if poster_type in [1, '1',2,3,4, '2' , '3' , '4' ]:
         poster_type = 'current tenant'
         query = "UPDATE poster SET user_type = '"+poster_type + \
             "' WHERE telegram_id ="+str(update.message.from_user.id)+"::text"
@@ -127,7 +150,9 @@ def poster_type(update, context):
         return "city"
 
     else:
-        return 'Options'
+        update.message.reply_text(
+            'Please select correct option', reply_markup=ReplyKeyboardRemove())
+        return "poster_type"
 
 
 def city_type(update, context):
@@ -144,7 +169,9 @@ def city_type(update, context):
             'Please write your area in text field', reply_markup=ReplyKeyboardRemove())
         return "location"
     else:
-        poster_type(update, context)
+        update.message.reply_text(
+            'Please select correct option', reply_markup=ReplyKeyboardRemove())
+        return "city_type"
 
 
 def location(update, context):
@@ -189,7 +216,7 @@ def address(update, context, co=0):
 def home_type(update, context, co=0):
     home_types = str(update.message.text)
     key_Word = ['Flat', 'House', 'Studio', 'Shared Room', 'Shared Apartments']
-    cur.execute("select oftype from listings where telegram_id =" +
+    cur.execute("select oftype from poster where telegram_id =" +
                 str(update.message.from_user.id)+"::text")
 
     type = cur.fetchone()
@@ -301,8 +328,13 @@ def flat_area(update, context):
 def date_format_check(date_text):
     try:
         val = date_text.split("-")
-        datetime.strptime(val[0].strip(), '%d/%m/%Y')
-        datetime.strptime(val[1].strip(), '%d/%m/%Y')
+        start_date=datetime.strptime(val[0].strip(), '%d/%m/%Y')
+        end_date=datetime.strptime(val[1].strip(), '%d/%m/%Y')
+        if start_date > end_date:
+            return False
+        # if date is older than curent date 
+        if start_date < datetime.now():
+            return False
         return True
     except:
         return False
@@ -376,7 +408,7 @@ def phone_number(update, context):
         return "email"
     else:
         update.message.reply_text(
-            'Incorrect phone number format, should be +44XXXXXXXXXX', reply_markup=ReplyKeyboardRemove())
+            'Incorrect phone number format, should be +49XXXXXXXXXX', reply_markup=ReplyKeyboardRemove())
         return "phone_number"
     
 def email_validation(email):
@@ -454,7 +486,7 @@ def User_Data(update, context):
     Thank you for using our service
     '''
     # send data to user
-    cur.execute("SELECT * FROM listings LIMIT 0")
+    cur.execute("SELECT * FROM poster LIMIT 0")
     colnames = [desc[0] for desc in cur.description]
     user_id = update.message.from_user.id
     user_name = update.message.from_user.first_name

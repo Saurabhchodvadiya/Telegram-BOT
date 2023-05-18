@@ -30,13 +30,16 @@ def search_type(update, context):
         if data:
            
             update.message.reply_text(
-                'You are '+ str(data[2]) + ' and looking for a place  in '+str(data[3])+' for '+str(data[12])+' people'+ ' with rent '+str(data[7])+' and start date '+str(data[8])+' and end date '+str(data[9]), reply_markup=ReplyKeyboardRemove()
+                'You are '+ str(data[2]) + ' and looking for a place  in '+str(data[3])
+                # +' for '+str(data[12])+' people'+ ' with rent '+str(data[7])+' and start date '+str(data[8])+' and end date '+str(data[9])
+                , 
+                reply_markup=ReplyKeyboardRemove()
             )
 
             update.message.reply_text(
                 'Here are some options for you',
             )
-            cur.execute(f"select * from listings where city = '{data[3]}'")
+            cur.execute(f"select * from poster where city = '{data[3]}'")
             data = cur.fetchall()
             if data:
                 for i in data:
@@ -307,7 +310,7 @@ def manual_search(update, context):
 
 def manual_search_city(update, context):
     city = str(update.message.text)
-    cur.execute(f"select * from listings where city = '{city}'")
+    cur.execute(f"select * from poster where city = '{city}'")
     data = cur.fetchall()
     if data:
         for i in data:
@@ -320,6 +323,15 @@ def manual_search_city(update, context):
                 Vacant From : '''+str(i[10])+'''
             
                 ''')
+        update.message.reply_text(
+        'Thank you for using our service \n\n',
+        reply_markup=ReplyKeyboardRemove()
+        )
+        update.message.reply_text(
+            'Start a new conversation by typing /start',
+            reply_markup=ReplyKeyboardRemove()
+        )
+        return ConversationHandler.END
     else:
         # return no data found
         update.message.reply_text(
