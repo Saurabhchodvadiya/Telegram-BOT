@@ -52,6 +52,11 @@ def search_type(update, context):
                         Vacant From : '''+str(i[10])+'''
                     
                         ''')
+                update.message.reply_text(
+                    'Start a new conversation by typing /start',
+                    reply_markup=ReplyKeyboardRemove()
+                )
+                return ConversationHandler.END
             else:
                 update.message.reply_text(
                     'No data found',
@@ -111,7 +116,7 @@ def next_option(update, context):
             reply_markup=ReplyKeyboardRemove()
         )
         return "next_option_area"
-    elif data == "Skip":
+    elif data == "Skip" or data == "skip":
         update.message.reply_text(
             'You can not skip this field',
         )
@@ -126,7 +131,7 @@ def next_option(update, context):
 
 def next_option_area(update, context):
     data = str(update.message.text)
-    
+    data = data.capitalize()
     query = f"update search set area = '{data}' where telegram_id = {update.message.from_user.id}"
     cur.execute(query)
     conn.commit()
@@ -140,6 +145,7 @@ def next_option_area(update, context):
 
 def next_option_rent(update, context):
     data = str(update.message.text)
+    data = data.capitalize()
     query = f"update search set rent = '{data}' where telegram_id = {update.message.from_user.id}"
     cur.execute(query)
     conn.commit()
@@ -151,6 +157,7 @@ def next_option_rent(update, context):
 
 def next_option_people(update, context):
     data = str(update.message.text)
+    data = data.capitalize()
     query = f"update search set people = '{data}' where telegram_id = {update.message.from_user.id}"
     cur.execute(query)
     conn.commit()
@@ -173,6 +180,7 @@ def date_format_check(date_text):
     
 def next_option_start_date(update, context):
     data = str(update.message.text)
+    data = data.capitalize()
     if data != "Skip":
         if date_format_check(data):
             query = f"update search set startdate = '{data}' where telegram_id = {update.message.from_user.id}"
@@ -196,6 +204,7 @@ def next_option_start_date(update, context):
 
 def next_option_end_date(update, context):
     data = str(update.message.text)
+    data = data.capitalize()
     if data != "Skip":
         if date_format_check(data):
             query = f"update search set end_date = '{data}' where telegram_id = {update.message.from_user.id}"
@@ -243,6 +252,10 @@ def next_option_end_date(update, context):
             'No result found',
             reply_markup=ReplyKeyboardRemove()
         )
+        update.message.reply_text(
+            'Please enter /start to start again',
+            reply_markup=ReplyKeyboardRemove()
+        )
         return ConversationHandler.END
     else:
         for i in result:
@@ -263,13 +276,6 @@ def next_option_end_date(update, context):
 
         return ConversationHandler.END
     
-
-
-
-
-
-
-
 
 def manual_search(update, context):
     data = str(update.message.text)

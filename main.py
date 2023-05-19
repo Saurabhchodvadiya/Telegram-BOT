@@ -59,11 +59,15 @@ def handle_message(update, context):
     if message_type == 'private':
         # msg user in private how i can help you ?
         update.message.reply_text(
-            'This is a private message. How can I help you? ')
+            'This is a Property Finder and Post Bot.')
+        
+        update.message.reply_text(
+            'How can I help you? ')
+        
         
         reply_keyboard = [['1', '2', '3', '4',]]
         update.message.reply_text(
-            '''Please select your option(Type the number or click the button):\n1. Poster\n2. Seeker\n3. Update\n4. Search
+            '''Please select your option(Type the number or click the button):\n1. Post Property \n2. New member \n3. Update Profile \n4.  Find a home
             ''',
             reply_markup=ReplyKeyboardMarkup(
                 reply_keyboard, one_time_keyboard=True),
@@ -94,7 +98,7 @@ def Options(update, context):
         # )
         reply_keyboard = [[1, 2]
                           ]
-        update.message.reply_text('You selected Poster \n You want to post bulk or single post ? \n1. Bulk\n2. Single',
+        update.message.reply_text('You select Post Property. \n You want to post bulk or single Property ? \n1. Bulk\n2. Single',
                                   reply_markup=(ReplyKeyboardMarkup(
                                       reply_keyboard, one_time_keyboard=True)),
                                   )
@@ -112,7 +116,7 @@ def Options(update, context):
         return "poster_options"
         # return "poster_type"
     elif '2' in text:
-        update.message.reply_text('You selected Seeker')
+        update.message.reply_text('You select New member.')
         reply_keyboard = [[1, 2], [3]]
         update.message.reply_text(
             'Please select your type from keyboard button (Type the number or click the button) : \n1. Students\n2. Profesional\n3. Academics',
@@ -131,7 +135,7 @@ def Options(update, context):
             conn.commit()
         return "seeker_type"
     elif '3' in text or 'update_type' in text:
-        update.message.reply_text('You selected Update')
+        update.message.reply_text('You select Update Profile.')
         reply_keyboard = [[1, 2, 3, 4, 5, 6, 7, 8]]
         update.message.reply_text(
             'Please select your type from keyboard button (Type the number or click the button) : \n1. Email\n2. Mobile\n3. End Date\n4. Start Date\n5. City\n6. Address\n7. People\n8. Area',
@@ -141,7 +145,7 @@ def Options(update, context):
         )
         return "update_type"
     elif '4' in text:
-        update.message.reply_text('You selected Search')
+        update.message.reply_text('You selected Find a home.')
         reply_keyboard = [[1, 2]]
         update.message.reply_text(
             'Please select your type from keyboard button (Type the number or click the button) : \n1. Based on your Data\n2. Manual',
@@ -234,6 +238,19 @@ if __name__ == '__main__':
             'seeker_anmeldung': [MessageHandler(Filters.text, seeker_anmeldung)],
             'stop': [MessageHandler(Filters.text, stop)],
             'update_area' : [MessageHandler(Filters.text, update_area)],
+            'seeker_previous_country' : [MessageHandler(Filters.text, seeker_previous_country)],
+            'seeker_previous_city_other' : [MessageHandler(Filters.text, seeker_previous_city_other)],
+            'seeker_previous_city' : [MessageHandler(Filters.text, seeker_previous_city)],
+            'seeker_flat_share' : [MessageHandler(Filters.text, seeker_flat_share)],
+            'seeker_kids' : [MessageHandler(Filters.text, seeker_kids)],
+            'seeker_kids_age' : [MessageHandler(Filters.text, seeker_kids_age)],
+            'seeker_gender_preference': [MessageHandler(Filters.text, seeker_gender_preference)],
+            'seeker_pets' : [MessageHandler(Filters.text, seeker_pets)],
+            'seeker_college_name' : [MessageHandler(Filters.text, seeker_college_name)],
+            'seeker_company_name' : [MessageHandler(Filters.text, seeker_company_name)],
+            'seeker_pets_type': [MessageHandler(Filters.text, seeker_pets_type)] ,
+            'seeker_smoke': [MessageHandler(Filters.text, seeker_smoke)]
+
         },
         fallbacks=[CommandHandler('stop', stop)]
     )

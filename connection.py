@@ -6,7 +6,7 @@ import os
 conn_params = {
     'host': os.getenv('DB_HOST'),
     'port': os.getenv('DB_PORT'),
-    'dbname': os.getenv('DB_NAME'),
+    'dbname': 'zimmerwelt',
     'user': 'postgres',
     'password': '123456'
 }
@@ -21,32 +21,15 @@ cur = conn.cursor()
 # cur.execute(query)
 # conn.commit()
 # truncate search table
+# drop table if exists seeker
 
 
 
 
 
 
-query = """CREATE TABLE IF NOT EXISTS seeker (
-    id SERIAL PRIMARY KEY,
-    telegram_id INTEGER,
-    user_type VARCHAR(255),
-    city VARCHAR(255),
-    address VARCHAR(255),
-    area VARCHAR(255),
-    apartment VARCHAR(255),
-    rent VARCHAR(255),
-    high_rent VARCHAR(255),
-    Anmeldung VARCHAR(255),
-    startdate VARCHAR(255),
-    end_date VARCHAR(255),
-    mobile VARCHAR(255),
-    email VARCHAR(255),
-    people VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)"""
-cur.execute(query)
-conn.commit()
+
+
 
 # query = """CREATE TABLE IF NOT EXISTS listings (
 #     id SERIAL PRIMARY KEY,
