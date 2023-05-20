@@ -82,7 +82,7 @@ def seeker_company_name(update, context):
     )
     cur.execute(query)
     conn.commit()
-    reply_keyboard = [[1, 2, 3, 4, 5, 6]]
+    reply_keyboard = [[1, 2, 3],[4, 5, 6]]
     update.message.reply_text(
             "Are you currently in which city? (Type from keyboard button or click on keyboard button) : \n 1. Munich \n 2. Berlin \n 3. Frankfurt \n 4. Dusseldorf \n 5. Hamburg \n 6. Other City",
             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
@@ -99,7 +99,7 @@ def seeker_college_name(update, context):
     )
     cur.execute(query)
     conn.commit()
-    reply_keyboard = [[1, 2, 3, 4, 5, 6]]
+    reply_keyboard = [[1, 2, 3],[ 4, 5, 6]]
     update.message.reply_text(
             "Are you currently in which city? (Type from keyboard button or click on keyboard button) : \n 1. Munich \n 2. Berlin \n 3. Frankfurt \n 4. Dusseldorf \n 5. Hamburg \n 6. Other City",
             reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
@@ -125,7 +125,7 @@ def seeker_previous_city(update, context):
             )
             return "seeker_previous_city_other"
         else:
-            reply_keyboard = [[1, 2, 3, 4, 5]]
+            reply_keyboard = [[1, 2, 3], [4, 5]]
             update.message.reply_text(
                 "In which city you find place ? (Type from keyboard button or click on keyboard button): \n 1. Munich \n 2. Berlin \n 3. Frankfurt \n 4. Dusseldorf \n 5. Hamburg",
                 reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
@@ -162,7 +162,7 @@ def seeker_previous_country(update, context):
     )
     cur.execute(query)
     conn.commit()
-    reply_keyboard = [[1, 2, 3, 4, 5]]
+    reply_keyboard = [[1, 2, 3],[ 4, 5]]
     update.message.reply_text(
                 "In which city you find place ? (Type from keyboard button or click on keyboard button): \n 1. Munich \n 2. Berlin \n 3. Frankfurt \n 4. Dusseldorf \n 5. Hamburg",
                 reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
@@ -191,7 +191,21 @@ def seeker_city_type(update, context):
                 "Please write your area in text field", reply_markup=ReplyKeyboardRemove()
             )
         else:
-            reply_keyboard = [[i for i in range(len(city_id))]]
+           
+            l=[]
+            reply_keyboard=[]
+            for i in range(len(city_id)):
+                l.append(i)
+                if len(l)==3:
+                    reply_keyboard.append(l)
+                    l=[]
+            if len(l)>0:
+                reply_keyboard.append(l)
+
+                    
+
+
+            # reply_keyboard = [[i for i in range(len(city_id))]]
             
             update.message.reply_text(
                 "Please select your area (Type from keyboard button or click on keyboard button):"+" \n".join([str(i)+"). "+j[0] for i,j in enumerate(city_id)]),
