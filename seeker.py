@@ -192,6 +192,7 @@ def seeker_city_type(update, context):
             )
         else:
            
+           
             l=[]
             reply_keyboard=[]
             for i in range(len(city_id)):
